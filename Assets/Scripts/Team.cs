@@ -10,6 +10,7 @@ public class Team : MonoBehaviour
 	void Start()
 	{
 		GenInitialUnits();
+		GetComponent<PlayerUnitController>().DisplayUnits();
 	}
 
 	void GenInitialUnits()
