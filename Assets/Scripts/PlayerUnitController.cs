@@ -10,13 +10,9 @@ public class PlayerUnitController : MonoBehaviour
 	public GameObject tilePrefab;
 	public float gap;
 
-	void Start()
-	{
-		playerTeam = GameObject.FindGameObjectWithTag("PlayerTeam").GetComponent<Team>();
-	}
-
 	public void DisplayUnits()
 	{
+		playerTeam = GameObject.FindGameObjectWithTag("PlayerTeam").GetComponent<Team>();
 		int unitIndex = 0;
 		AddUnit(Vector3.zero, unitIndex);
 
@@ -37,7 +33,6 @@ public class PlayerUnitController : MonoBehaviour
 				unitIndex++;
 				if(unitIndex < playerTeam.units.Count)
 					AddUnit(gridLoc, unitIndex);
-				Debug.Log(unitIndex);
 				if (gridLoc.x == 0 || gridLoc.z == 0 || gridLoc.x == -gridLoc.z)
 				{
 					dir++;
