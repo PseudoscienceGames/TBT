@@ -8,6 +8,7 @@ public class PlayerUnitController : MonoBehaviour
 	private Team playerTeam;
 	public GameObject pawnPrefab;
 	public GameObject tilePrefab;
+	public GameObject squadPrefab;
 	public float gap;
 
 	public void DisplayUnits()
@@ -47,12 +48,15 @@ public class PlayerUnitController : MonoBehaviour
 	void AddUnit(Vector3 gridLoc, int unitIndex)
 	{
 		Vector3 pos = GridCalc.GridToWorld(gridLoc) * gap;
-		pos.y = pos.z / 4f;
 		GameObject currentTile = Instantiate(tilePrefab, pos, Quaternion.identity) as GameObject;
 		currentTile.transform.parent = transform.parent.FindChild("Tiles");
 		GameObject currentPawn = Instantiate(pawnPrefab, pos, Quaternion.AngleAxis(180, Vector3.up)) as GameObject;
 		currentPawn.GetComponent<Pawn>().unit = playerTeam.units[unitIndex];
 		currentPawn.name = playerTeam.units[unitIndex].name;
 		currentPawn.transform.parent = transform;
+	}
+	public void CreateNewSquad()
+	{
+		Instantiate(squadPrefab, new Vector3(-5, 0, 5), Quaternion.identity);
 	}
 }
