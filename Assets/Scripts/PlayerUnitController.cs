@@ -48,8 +48,6 @@ public class PlayerUnitController : MonoBehaviour
 	void AddUnit(Vector3 gridLoc, int unitIndex)
 	{
 		Vector3 pos = GridCalc.GridToWorld(gridLoc) * gap;
-		GameObject currentTile = Instantiate(tilePrefab, pos, Quaternion.identity) as GameObject;
-		currentTile.transform.parent = transform.parent.FindChild("Tiles");
 		GameObject currentPawn = Instantiate(pawnPrefab, pos, Quaternion.AngleAxis(180, Vector3.up)) as GameObject;
 		currentPawn.GetComponent<Pawn>().unit = playerTeam.units[unitIndex];
 		currentPawn.name = playerTeam.units[unitIndex].name;

@@ -9,6 +9,7 @@ public class Cursor : MonoBehaviour
 	public bool mouseOverGUI = false;
 	public void MouseOverGUI() { mouseOverGUI = true; }
 	public void MouseNotOverGUI() { mouseOverGUI = false; }
+	public Vector3 lastTileWorldLoc;
 
 	void Update()
 	{
@@ -16,9 +17,10 @@ public class Cursor : MonoBehaviour
 		RaycastHit hit = new RaycastHit();
 
 
-		if (!mouseOverGUI && Physics.Raycast(ray, out hit))
+
+		if (Input.GetMouseButtonDown(0))
 		{
-			if (Input.GetMouseButtonDown(0))
+			if (!mouseOverGUI && Physics.Raycast(ray, out hit, 50, 1 << LayerMask.NameToLayer("Unit")))
 			{
 				if (hit.transform.GetComponent<Pawn>() != null)
 				{
@@ -26,11 +28,24 @@ public class Cursor : MonoBehaviour
 					selection.GetComponent<CapsuleCollider>().enabled = false;
 				}
 			}
-			if(Input.GetMouseButton(0))
+		}
+		if (Input.GetMouseButton(0))
+		{
+			if (!mouseOverGUI && Physics.Raycast(ray, out hit, 50, 1 << LayerMask.NameToLayer("Tile")) && selection != null)
 			{
 				selection.transform.position = hit.point;
-				selection.GetComponent<CapsuleCollider>().enabled = true;
+				lastTileWorldLoc = hit.transform.position;
 			}
 		}
+		if (Input.GetMouseButtonUp(0))
+		{
+			//if (!mouseOverGUI && Physics.Raycast(ray, out hit, 50, 1 << LayerMask.NameToLayer("Tile")) && selection != null)
+			//{
+				selection.GetComponent<CapsuleCollider>().enabled = true;
+				selection.transform.position = lastTileWorldLoc;
+				selection = null;
+			//}
+		}
+		
 	}
 }
