@@ -84,5 +84,25 @@ namespace Math
 			}
 			return moveTo;
 		}
+
+		public static int GridToIndex(Vector3 gridLoc)
+		{
+			int index = Mathf.RoundToInt((gridLoc.x * 1000000) + (gridLoc.y * 1000) + gridLoc.z);
+
+			Debug.Log(gridLoc + " " + index);
+			return index;
+		}
+
+		public static Vector3 IndexToGrid(int index)
+		{
+			Vector3 gridLoc;
+			gridLoc.x = Mathf.RoundToInt(index / 1000000f);
+			gridLoc.y = Mathf.RoundToInt((index - gridLoc.x) / 1000f);
+			gridLoc.z = Mathf.RoundToInt((index - (gridLoc.x + gridLoc.y)));
+			return gridLoc;
+
+
+			return gridLoc;
+		}
 	}
 }

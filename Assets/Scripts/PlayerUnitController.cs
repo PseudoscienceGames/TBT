@@ -11,6 +11,8 @@ public class PlayerUnitController : MonoBehaviour
 	public GameObject squadPrefab;
 	public float gap;
 
+	public Dictionary<Vector3, int> units = new Dictionary<Vector3, int>();
+
 	public void DisplayUnits()
 	{
 		playerTeam = GameObject.FindGameObjectWithTag("PlayerTeam").GetComponent<Team>();
@@ -49,12 +51,47 @@ public class PlayerUnitController : MonoBehaviour
 	{
 		Vector3 pos = GridCalc.GridToWorld(gridLoc) * gap;
 		GameObject currentPawn = Instantiate(pawnPrefab, pos, Quaternion.AngleAxis(180, Vector3.up)) as GameObject;
+		units.Add(GridCalc.WorldToGrid(pos), unitIndex);
 		currentPawn.GetComponent<Pawn>().unit = playerTeam.units[unitIndex];
 		currentPawn.name = playerTeam.units[unitIndex].name;
 		currentPawn.transform.parent = transform;
 	}
-	public void CreateNewSquad()
+
+	public void MoveUnit(Vector3 oldGridLoc, Vector3 newGridLoc)
 	{
-		Instantiate(squadPrefab, new Vector3(-5, 0, 5), Quaternion.identity);
+		units.Add(newGridLoc, units[oldGridLoc]);
+		units.Remove(oldGridLoc);
+		CheckForSquads(newGridLoc);
 	}
+
+	public void CheckForSquads(Vector3 gridLoc)
+	{
+		bool hasSquad = false;
+		for(int dir = 0; dir < 6; dir++)
+		{
+			Vector3 adjLoc = GridCalc.MoveTo(gridLoc, dir);
+            if (units.ContainsKey(adjLoc))
+			{
+				Debug.Log(units[adjLoc]);
+				if (GetComponent<Team>().units[units[adjLoc]].squad != null)
+					GetComponent<Team>().units[units[gridLoc]].squad = GetComponent<Team>().units[units[adjLoc]].squad;
+				else
+				{
+					GameObject squad = CreateNewSquad();
+					GetComponent<Team>().units[units[gridLoc]].squad = squad.GetComponent<Squad>();
+					GetComponent<Team>().units[units[adjLoc]].squad = squad.GetComponent<Squad>();
+				}
+				hasSquad = true;
+			}
+		}
+		//if (!hasSquad)
+		//	units[gridLoc].squad = null;
+    }
+
+	public GameObject CreateNewSquad()
+	{
+		return Instantiate(squadPrefab);
+	}
+
+
 }

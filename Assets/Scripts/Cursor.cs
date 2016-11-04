@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Math;
 
 public class Cursor : MonoBehaviour
 {
@@ -9,7 +10,8 @@ public class Cursor : MonoBehaviour
 	public bool mouseOverGUI = false;
 	public void MouseOverGUI() { mouseOverGUI = true; }
 	public void MouseNotOverGUI() { mouseOverGUI = false; }
-	public Vector3 lastTileWorldLoc;
+	public Vector3 oldGridLoc;
+	public Vector3 newGridLoc;
 
 	void Update()
 	{
@@ -26,6 +28,7 @@ public class Cursor : MonoBehaviour
 				{
 					selection = hit.transform.gameObject;
 					selection.GetComponent<CapsuleCollider>().enabled = false;
+					oldGridLoc = GridCalc.WorldToGrid(hit.transform.position);
 				}
 			}
 		}
@@ -34,7 +37,7 @@ public class Cursor : MonoBehaviour
 			if (!mouseOverGUI && Physics.Raycast(ray, out hit, 50, 1 << LayerMask.NameToLayer("Tile")) && selection != null)
 			{
 				selection.transform.position = hit.point;
-				lastTileWorldLoc = hit.transform.position;
+				newGridLoc = GridCalc.WorldToGrid(hit.transform.position);
 			}
 		}
 		if (Input.GetMouseButtonUp(0))
@@ -42,7 +45,9 @@ public class Cursor : MonoBehaviour
 			//if (!mouseOverGUI && Physics.Raycast(ray, out hit, 50, 1 << LayerMask.NameToLayer("Tile")) && selection != null)
 			//{
 				selection.GetComponent<CapsuleCollider>().enabled = true;
-				selection.transform.position = lastTileWorldLoc;
+				selection.transform.position = GridCalc.GridToWorld(newGridLoc);
+			if (selection != null)
+				selection.transform.parent.GetComponent<PlayerUnitController>().MoveUnit(oldGridLoc, newGridLoc);
 				selection = null;
 			//}
 		}

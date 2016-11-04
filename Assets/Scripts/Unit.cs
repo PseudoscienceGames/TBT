@@ -8,6 +8,7 @@ public class Unit
 	public int level;
 	public unitClass myClass;
 	public element myElement;
+	public Squad squad;
 
 	public enum unitClass
 	{

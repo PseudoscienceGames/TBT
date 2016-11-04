@@ -9,8 +9,6 @@ public class HexGrid : MonoBehaviour
 
 	public GameObject tile;
 
-	public List<Vector3> gridLocs = new List<Vector3>();
-
 	void Start()
 	{
 		MapGen();
@@ -43,7 +41,6 @@ public class HexGrid : MonoBehaviour
 
 	void AddGridLoc(Vector3 gridLoc)
 	{
-		gridLocs.Add(gridLoc);
 		GameObject currentTile = Instantiate(tile, GridCalc.GridToWorld(gridLoc), Quaternion.identity) as GameObject;
 		currentTile.transform.parent = transform;
 	}
