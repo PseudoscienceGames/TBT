@@ -23,6 +23,7 @@ public class Army
 			units.Add(new Unit());
 			units[i].CalcStats();
 		}
+		squads.Add(new Squad(ArmyController.Instance.armies.IndexOf(this)));
 		for (int i = 0; i < units.Count; i++)
 		{
 			squads[0].AddUnit(units[i]);

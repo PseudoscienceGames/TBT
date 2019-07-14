@@ -43,24 +43,27 @@ public class ArmyDisplay : MonoBehaviour
 		int y = 0;
 		foreach (Squad squad in army.squads)
 		{
-			Vector3 loc = new Vector3(x * 4f, 0, (-y * 3.5f) - 1.7325f);
-			GameObject currentObj = Instantiate(Resources.Load("SquadPlatform"), loc, Quaternion.identity) as GameObject;
-			currentObj.transform.parent = transform;
-			foreach (int index in squad.units.Keys)
+			if (army.squads.IndexOf(squad) != 0)
 			{
-				Vector3 newLoc = loc;
-				if (index != 0)
-					newLoc += HexGrid.GridToWorld(HexGrid.MoveTo(Vector2Int.zero, index - 1));
-				currentObj = Instantiate(Resources.Load("UnitAvatar"), newLoc, Quaternion.identity) as GameObject;
+				Vector3 loc = new Vector3(x * 4f, 0, (-y * 3.5f) - 1.7325f);
+				GameObject currentObj = Instantiate(Resources.Load("SquadPlatform"), loc, Quaternion.identity) as GameObject;
 				currentObj.transform.parent = transform;
-				currentObj.GetComponent<UnitAvatar>().unit = squad.units[index];
-				unitsLeft.Remove(squad.units[index]);
-			}
-			x++;
-			if(x >= dim)
-			{
-				x = 0;
-				y++;
+				foreach (int index in squad.units.Keys)
+				{
+					Vector3 newLoc = loc;
+					if (index != 0)
+						newLoc += HexGrid.GridToWorld(HexGrid.MoveTo(Vector2Int.zero, index - 1));
+					currentObj = Instantiate(Resources.Load("UnitAvatar"), newLoc, Quaternion.identity) as GameObject;
+					currentObj.transform.parent = transform;
+					currentObj.GetComponent<UnitAvatar>().unit = squad.units[index];
+					unitsLeft.Remove(squad.units[index]);
+				}
+				x++;
+				if (x >= dim)
+				{
+					x = 0;
+					y++;
+				}
 			}
 		}
 		x = 0; y = 0;
