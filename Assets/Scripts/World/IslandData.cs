@@ -79,8 +79,10 @@ public class IslandData
 			{
 				Blob blob = new Blob();
 				List<Vector2Int> pot = new List<Vector2Int>();
-				while (pot.Count < 4)
+				int x = 0;
+				while (pot.Count < 4 && x < 10000)
 				{
+					x++;
 					pot.Clear();
 					Vector2Int loc = left[Random.Range(0, left.Count)];
 					pot.Add(loc);

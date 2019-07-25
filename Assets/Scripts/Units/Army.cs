@@ -11,28 +11,36 @@ public class Army
 	public List<Unit> units = new List<Unit>();
 	public List<Vector2Int> land = new List<Vector2Int>();
 
-	public void Init()
+	public void StartPlayerArmy()
 	{
-		Vector2Int initLand = BuildingController.Instance.RandomFlatTile();
-		while(BuildingController.Instance.buildings.ContainsKey(initLand))
-			initLand = BuildingController.Instance.RandomFlatTile();
-		land.Add(initLand);
-		BuildingController.Instance.AddBuilding(this, initLand);
-		for (int i = 0; i < ArmyController.Instance.initUnitCount; i++)
+		squads.Add(new Squad(this));
+		for (int i = 0; i < 9; i++)
 		{
-			units.Add(new Unit());
-			units[i].CalcStats();
-		}
-		squads.Add(new Squad(ArmyController.Instance.armies.IndexOf(this)));
-		for (int i = 0; i < units.Count; i++)
-		{
-			squads[0].AddUnit(units[i]);
-			
+			AddUnit();
 		}
 	}
 
-	public void DeploySquad(Squad squad)
+	public void AddUnit()
 	{
-		SquadController.Instance.SpawnSquad(this, squad, land[0]);
+		Unit unit = new Unit();
+		units.Add(unit);
+		unit.CalcStats();
+		squads[0].AddUnit(unit);
+		unit.mySquad = 0;
+	}
+	public void AddSquad(Unit unit)
+	{
+		squads.Add(new Squad(this, unit));
+
+		MoveUnit(unit, squads.Count - 1);
+		ArmyDisplay.Instance.Sort();
+	}
+
+	public void MoveUnit(Unit unit, int squad)
+	{
+		Debug.Log(unit.mySquad);
+		squads[unit.mySquad].RemoveUnit(unit);
+		squads[squad].AddUnit(unit);
+		unit.mySquad = squad;
 	}
 }

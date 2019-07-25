@@ -20,7 +20,7 @@ public class WorldData : MonoBehaviour
 	private void Start()
 	{
 		GenWorldData();
-		ArmyController.Instance.CalcArmies();
+		//ArmyController.Instance.CalcArmies();
 	}
 
 	void GenWorldData()
@@ -36,6 +36,10 @@ public class WorldData : MonoBehaviour
 		
 		Debug.Log(usedTiles.Count);
 		GetComponent<WorldMesh>().GenMesh();
+		for (int i = 0; i < BuildingController.Instance.flatLand.Count / 2; i++)
+		{
+			BuildingController.Instance.AddBuilding();
+		}
 	}
 
 	void AddIsland(int islandSize)

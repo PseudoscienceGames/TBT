@@ -1,0 +1,8 @@
+player creates squads to send on missions
+mission types
+-monster hunting
+-mercenary work
+-security
+-assassination
+-treasure hunting
+-

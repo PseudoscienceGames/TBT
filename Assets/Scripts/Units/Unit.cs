@@ -9,7 +9,7 @@ public class Unit
 	public int mySquad;
 	public string myName;
 	public ClassTitle title;
-
+	public int squadPos;
 	public List<Vector2Int> classLevels = new List<Vector2Int>();
 	public List<float> stats = new List<float>();
 	public List<Wound> wounds = new List<Wound>();

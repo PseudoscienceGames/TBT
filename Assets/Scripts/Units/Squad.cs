@@ -5,22 +5,24 @@ using UnityEngine;
 [System.Serializable]
 public class Squad
 {
-	public int myArmy;
-	public Dictionary<int, Unit> units = new Dictionary<int, Unit>();
+	public Army myArmy;
+	public List<Unit> units = new List<Unit>();
 
-	public Squad(int army)
+	public Squad(Army army, Unit leader)
+	{
+		myArmy = army;
+		AddUnit(leader);
+	}
+	public Squad(Army army)
 	{
 		myArmy = army;
 	}
-
 	public void AddUnit(Unit unit)
 	{
-		unit.mySquad = ArmyController.Instance.armies[myArmy].squads.IndexOf(this);
-		int slot = 0;
-		while(units.ContainsKey(slot))
-		{
-			slot++;
-		}
-		units.Add(slot, unit);
+		units.Add(unit);
+	}
+	public void RemoveUnit(Unit unit)
+	{
+		units.RemoveAt(units.IndexOf(unit));
 	}
 }
